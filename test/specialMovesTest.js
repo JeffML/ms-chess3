@@ -159,7 +159,7 @@ describe('Legal squares test', () => {
         var p = new ChessPiece('Na1');
         seneca.act({
             role: "movement",
-            cmd: "legalSquares",
+            cmd: "legalMoves",
             piece: p
         }, (err, msg) => {
             console.log("Na1", {
@@ -194,7 +194,7 @@ describe('Legal squares test', () => {
         var p = new ChessPiece('Nd4');
         seneca.act({
             role: "movement",
-            cmd: "legalSquares",
+            cmd: "legalMoves",
             piece: p
         }, (err, msg) => {
             expect(err)

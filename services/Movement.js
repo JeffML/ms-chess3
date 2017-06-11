@@ -37,7 +37,7 @@ module.exports = function movement(options) {
 
     this.add({
         role: "movement",
-        cmd: "legalSquares",
+        cmd: "legalMoves",
     }, (msg, reply) => {
         const isPawn = msg.piece.piece === 'P';
         const isKnight = msg.piece.piece === 'N';
