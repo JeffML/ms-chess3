@@ -1,11 +1,12 @@
 const rankAndFile = require("./helpers/rankAndFileMoves")
 const diagonal = require("./helpers/diagonalMoves")
+const legalMovesWithBoard = require("./helpers/legalMovesWithBoard")
 
-module.exports = function movement(options) {
+module.exports = function movement() {
 
     this.add({
         role: "movement",
-        cmd: "rawMoves",
+        cmd: "rawMoves"
     }, (msg, reply) => {
         var err = null;
         var rawMoves = [];
@@ -37,7 +38,7 @@ module.exports = function movement(options) {
 
     this.add({
         role: "movement",
-        cmd: "legalMoves",
+        cmd: "legalMoves"
     }, (msg, reply) => {
         const isPawn = msg.piece.piece === 'P';
         const isKnight = msg.piece.piece === 'N';
@@ -61,5 +62,16 @@ module.exports = function movement(options) {
 
             reply(null, squared);
         });
-    })
+    });
+
+    this.add('role:movement,cmd:legalMoves', function (msg, reply) {
+        this.prior(msg, function (err, moves) {
+            if (msg.board) {
+                const boardMoves = legalMovesWithBoard(msg, moves);
+                reply(err, boardMoves);
+                return;
+            }
+            reply(err, moves);
+        });
+    });
 };

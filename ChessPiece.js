@@ -1,5 +1,4 @@
 'use strict';
-const placement = require('./services/Placement')
 
 const pieces = [
     'K',

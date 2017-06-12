@@ -86,9 +86,9 @@ describe("Knight moves tests", () => {
             piece: p,
             isKnight: true
         }, (err, msg) => {
-            console.log({
-                msg
-            })
+            // console.log({
+            //     msg
+            // })
             expect(msg)
                 .to.include({
                     file: 'b',

@@ -1,4 +1,4 @@
-module.exports = function specialMovement(options) {
+module.exports = function specialMovement() {
     function pawnMoves(position) {
         const cFile = position.file.charCodeAt()
         const cRank = position.rank.charCodeAt();
