@@ -18,7 +18,7 @@ module.exports = function (msg, moves) {
     };
 
     var rangeCheck = rangeChecks[msg.piece.piece];
-
+    // console.error(msg.piece.piece, rangeCheck.name)
     newMoves = moves.filter(m => {
         return rangeCheck(m, blockers, pp);
     })
@@ -26,10 +26,26 @@ module.exports = function (msg, moves) {
 }
 
 function pawnChecks(m, blockers, pp) {
-    return true;
+    console.log({
+        move: m,
+        blockers,
+        pp
+    })
+    const impedes = blockers.filter(b => {
+        return b.file === pp.file &&
+            (b.rank === m.rank ||
+                b.rank > pp.rank && b.rank < m.rank);
+    })
+    return impedes.length === 0;
 }
 
-function knightChecks(m, blockers, pp) {
+function knightChecks(m, blockers) {
+    for (const b of blockers) {
+        if (m.rank === b.rank && m.file === b.file) {
+            return false;
+        }
+    }
+
     return true;
 }
 
@@ -38,9 +54,9 @@ function panopticonChecks(m, blockers, pp) {
 }
 
 function rankAndFileChecks(m, blockers, pp) {
-    var isGood = true;
+    let isGood = true;
 
-    for (var b of blockers) {
+    for (const b of blockers) {
         if (b.rank < pp.rank && b.file == pp.file && m.file == pp.file) {
             isGood = isGood && m.rank > b.rank;
         }
@@ -59,9 +75,9 @@ function rankAndFileChecks(m, blockers, pp) {
 }
 
 function diagonalChecks(m, blockers, pp) {
-    var isGood = true;
+    let isGood = true;
 
-    for (var b of blockers) {
+    for (const b of blockers) {
         if (b.rank > pp.rank && b.file > pp.file) {
             if (m.rank > pp.rank && m.file > pp.file) {
                 isGood = isGood && (m.rank < b.rank && m.file < b.file);

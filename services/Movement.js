@@ -29,7 +29,8 @@ module.exports = function movement() {
                 .concat(diagonal(pos, 1))
             break;
         default:
-            err = "unhandled " + msg.piece;
+            err = "unhandled " + msg.piece.piece;
+            console.error(err)
             break;
         };
 

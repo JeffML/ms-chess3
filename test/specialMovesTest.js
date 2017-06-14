@@ -16,10 +16,10 @@ var expect = require('chai')
     .expect;
 
 describe('Pawn moves test', () => {
-    it('Pe2 raw moves', function (done) {
+    it('Pa2 raw moves', function (done) {
         seneca.error(done)
 
-        var p = new ChessPiece('Pe2');
+        var p = new ChessPiece('Pa2');
         seneca.act({
             role: "movement",
             cmd: "rawMoves",
@@ -28,12 +28,12 @@ describe('Pawn moves test', () => {
         }, (err, msg) => {
             expect(msg)
                 .to.include({
-                    file: 'e',
+                    file: 'a',
                     rank: '3'
                 });
             expect(msg)
                 .to.include({
-                    file: 'e',
+                    file: 'a',
                     rank: '4'
                 })
             expect(msg)
@@ -162,9 +162,9 @@ describe('Legal squares test', () => {
             cmd: "legalMoves",
             piece: p
         }, (err, msg) => {
-            console.log("Na1", {
-                msg
-            })
+            // console.log("Na1", {
+            //     msg
+            // })
             expect(err)
                 .to.be.null;
             expect(msg)
