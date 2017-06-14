@@ -8,25 +8,29 @@ module.exports = function (msg, moves) {
     var newMoves = [];
     const pp = msg.piece.position;
 
-    switch (msg.piece.piece) {
-    case 'B':
-        newMoves = moves.filter(m => {
-            return diagonalChecks(m, blockers, pp);
-        })
-        return newMoves;
-    case 'R':
-        newMoves = moves.filter(m => {
-            return rankAndFileChecks(m, blockers, pp)
-        })
-        return newMoves;
-    case 'K':
-    case 'Q':
-        newMoves = moves.filter(m => {
-            return panopticonChecks(m, blockers, pp)
-        })
-        return newMoves;
-    }
+    const rangeChecks = {
+        B: diagonalChecks,
+        R: rankAndFileChecks,
+        K: panopticonChecks,
+        Q: panopticonChecks,
+        P: pawnChecks,
+        N: knightChecks
+    };
 
+    var rangeCheck = rangeChecks[msg.piece.piece];
+
+    newMoves = moves.filter(m => {
+        return rangeCheck(m, blockers, pp);
+    })
+    return newMoves;
+}
+
+function pawnChecks(m, blockers, pp) {
+    return true;
+}
+
+function knightChecks(m, blockers, pp) {
+    return true;
 }
 
 function panopticonChecks(m, blockers, pp) {
