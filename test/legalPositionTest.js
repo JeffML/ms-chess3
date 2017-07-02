@@ -10,7 +10,7 @@ describe('Legal Pieces test', () => {
     it('Ka1', () => {
         var ka1 = new ChessPiece('Ka1');
         expect(ka1)
-            .to.have.all.keys('piece', 'position');
+            .to.have.include.keys('piece', 'position');
         expect(ka1)
             .to.have.property('piece', 'K');
         expect(ka1.position)
@@ -21,7 +21,7 @@ describe('Legal Pieces test', () => {
     it('Pa2', () => {
         var pa2 = new ChessPiece('Pa2');
         expect(pa2)
-            .to.have.all.keys('piece', 'position');
+            .to.have.include.keys('piece', 'position');
         expect(pa2)
             .to.have.property('piece', 'P');
         expect(pa2.position)

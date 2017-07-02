@@ -10,10 +10,18 @@ const pieces = [
 
 
 class ChessPiece {
-    constructor(notation) {
+    constructor(
+        notation, {
+            color = 'W',
+            hasMoved = false,
+            inCheck = false
+        } = {}) {
         const piece = notation[0];
         const file = notation[1];
         const rank = notation[2];
+        this.color = color;
+        this.hasMoved = hasMoved;
+        this.inCheck = inCheck;
 
         if (!pieces.includes(piece)) {
             throw Error("invalid piece", piece);
@@ -29,6 +37,7 @@ class ChessPiece {
             throw Error("pawns cannot be on first rank");
         }
 
+        this.mustPromote = (piece === 'P' && rank === 8)
         this.piece = piece;
         this.position = {
             file,
@@ -37,7 +46,7 @@ class ChessPiece {
     }
 
     denote() {
-        return this.piece + this.position.file + this.position.rank;
+        return color === 'B' ? '...' : '' + this.piece + this.position.file + this.position.rank;
     }
 }
 
