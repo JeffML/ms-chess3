@@ -26,11 +26,6 @@ module.exports = function (msg, moves) {
 }
 
 function pawnChecks(m, blockers, pp) {
-    console.log({
-        move: m,
-        blockers,
-        pp
-    })
     const impedes = blockers.filter(b => {
         return b.file === pp.file &&
             (b.rank === m.rank ||

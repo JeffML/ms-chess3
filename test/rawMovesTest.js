@@ -10,7 +10,9 @@ const seneca = require('seneca')({
     })
     .use(movement);
 
-var expect = require('chai')
+const chaiSubset = require('chai-subset');
+const expect = require('chai')
+    .use(chaiSubset)
     .expect;
 
 describe('Raw moves test', () => {
@@ -23,23 +25,20 @@ describe('Raw moves test', () => {
             cmd: "rawMoves",
             piece: Ba1
         }, (err, msg) => {
-            // console.log(msg)
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'b',
                     rank: '2'
-                });
-            expect(msg)
-                .to.include({
+            }, {
                     file: 'h',
                     rank: '8'
-                })
-            expect(msg)
+            }])
+            expect(msg.moves)
                 .not.include({
                     file: 'a',
                     rank: '1'
                 })
-            expect(msg)
+            expect(msg.moves)
                 .to.have.length.above(7)
             done();
         });
@@ -54,22 +53,20 @@ describe('Raw moves test', () => {
             cmd: "rawMoves",
             piece: Rd4
         }, (err, msg) => {
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'd',
                     rank: '2'
-                });
-            expect(msg)
-                .to.include({
+            }, {
                     file: 'd',
                     rank: '8'
-                })
-            expect(msg)
+            }])
+            expect(msg.moves)
                 .not.include({
                     file: 'd',
                     rank: '4'
                 })
-            expect(msg)
+            expect(msg.moves)
                 .to.have.length.above(14)
             done();
         });
@@ -84,27 +81,24 @@ describe('Raw moves test', () => {
             cmd: "rawMoves",
             piece: p
         }, (err, msg) => {
-            expect(msg)
-                .to.include({
+            debugger;
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'b',
                     rank: '3'
-                });
-            expect(msg)
-                .to.include({
-                    file: 'c',
-                    rank: '6'
-                });
-            expect(msg)
-                .to.include({
+            }, {
                     file: 'd',
                     rank: '5'
-                })
-            expect(msg)
+            }, {
+                    file: 'c',
+                    rank: '6'
+            }])
+            expect(msg.moves)
                 .not.include({
                     file: 'g',
                     rank: '4'
                 })
-            expect(msg)
+            expect(msg.moves)
                 .to.have.length.above(14)
             done();
         });
@@ -119,27 +113,23 @@ describe('Raw moves test', () => {
             cmd: "rawMoves",
             piece: p
         }, (err, msg) => {
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'b',
                     rank: '8'
-                });
-            expect(msg)
-                .to.include({
-                    file: 'c',
-                    rank: '6'
-                });
-            expect(msg)
-                .to.include({
+                        }, {
                     file: 'a',
                     rank: '7'
-                })
-            expect(msg)
+                        }, {
+                    file: 'c',
+                    rank: '6'
+                 }])
+            expect(msg.moves)
                 .not.include({
                     file: 'c',
                     rank: '4'
                 })
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(8)
             done();
         });

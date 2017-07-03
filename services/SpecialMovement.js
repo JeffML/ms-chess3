@@ -16,7 +16,10 @@ module.exports = function specialMovement() {
             })
         }
 
-        return rawMoves;
+        return {
+            moves: rawMoves,
+            moveVectors: [rawMoves]
+        };
     }
 
     function knightMoves(position) {
@@ -38,7 +41,10 @@ module.exports = function specialMovement() {
             });
         });
 
-        return rawMoves;
+        return {
+            moves: rawMoves,
+            moveVectors: [rawMoves]
+        };
     }
 
     this.add({
@@ -51,9 +57,7 @@ module.exports = function specialMovement() {
         }
 
         var pos = msg.piece.position;
-
-        const rawMoves = pawnMoves(pos);
-        reply(null, rawMoves);
+        reply(null, pawnMoves(pos));
     });
 
     this.add({
@@ -65,10 +69,7 @@ module.exports = function specialMovement() {
             return ("piece was not a knight")
         }
 
-        var rawMoves = [];
         var pos = msg.piece.position;
-
-        rawMoves = knightMoves(pos);
-        reply(null, rawMoves);
+        reply(null, knightMoves(pos));
     });
 }

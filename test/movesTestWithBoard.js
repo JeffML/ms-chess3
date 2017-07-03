@@ -33,19 +33,19 @@ describe('Bishop Legal moves with friendlies test', () => {
         }, (err, msg) => {
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(1)
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'b',
                     rank: '2'
-                });
-            expect(msg)
+                }])
+            expect(msg.moves)
                 .to.not.include({
                     file: 'h',
                     rank: '8'
                 })
-            expect(msg)
+            expect(msg.moves)
                 .not.include({
                     file: 'a',
                     rank: '1'
@@ -70,19 +70,17 @@ describe('Bishop Legal moves with friendlies test', () => {
         }, (err, msg) => {
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(7)
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'e',
                     rank: '5'
-                });
-            expect(msg)
-                .to.include({
+                }, {
                     file: 'g',
                     rank: '1'
-                })
-            expect(msg)
+                }])
+            expect(msg.moves)
                 .not.include({
                     file: 'g',
                     rank: '7'
@@ -109,19 +107,28 @@ describe('Rook Legal moves with friendlies test', () => {
         }, (err, msg) => {
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(12)
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'a',
                     rank: '2'
-                });
-            expect(msg)
+                }, {
+                    file: 'a',
+                    rank: '8'
+                }, {
+                    file: 'f',
+                    rank: '1'
+                }, {
+                    file: 'b',
+                    rank: '1'
+                }, ]),
+                expect(msg.moves)
                 .to.not.include({
                     file: 'h',
                     rank: '1'
                 })
-            expect(msg)
+            expect(msg.moves)
                 .not.include({
                     file: 'b',
                     rank: '2'
@@ -146,19 +153,17 @@ describe('Rook Legal moves with friendlies test', () => {
         }, (err, msg) => {
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(11)
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'd',
                     rank: '5'
-                });
-            expect(msg)
-                .to.include({
+                }, {
                     file: 'g',
                     rank: '4'
-                })
-            expect(msg)
+                }])
+            expect(msg.moves)
                 .not.include({
                     file: 'd',
                     rank: '2'
@@ -183,34 +188,27 @@ describe('Queen Legal moves with friendlies test', () => {
             piece: p,
             board: board
         }, (err, msg) => {
-            // console.log({
-            //     moves: msg
-            // })
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(15)
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'a',
                     rank: '2'
-                });
-            expect(msg)
-                .to.include({
+                }, {
                     file: 'h',
                     rank: '1'
-                })
-            expect(msg)
+                }, {
+                    file: 'e',
+                    rank: '4'
+                }])
+            expect(msg.moves)
                 .not.include({
                     file: 'g',
                     rank: '6'
                 });
-            expect(msg)
-                .to.include({
-                    file: 'e',
-                    rank: '4'
-                })
-            expect(msg)
+            expect(msg.moves)
                 .not.include({
                     file: 'b',
                     rank: '7'
@@ -233,14 +231,11 @@ describe('Queen Legal moves with friendlies test', () => {
             piece: p,
             board: board
         }, (err, msg) => {
-            // console.log({
-            //     moves: msg
-            // })
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(20)
-            expect(msg)
+            expect(msg.moves)
                 .to.containSubset([{
                     file: 'd',
                     rank: '2'
@@ -248,12 +243,12 @@ describe('Queen Legal moves with friendlies test', () => {
                     file: 'g',
                     rank: '7'
                 }])
-            expect(msg)
+            expect(msg.moves)
                 .to.not.include({
                     file: 'c',
                     rank: '3'
                 })
-            expect(msg)
+            expect(msg.moves)
                 .to.not.include({
                     file: 'd',
                     rank: '8'
@@ -278,14 +273,11 @@ describe('King Legal moves with friendlies test', () => {
             piece: p,
             board: board
         }, (err, msg) => {
-            // console.log({
-            //     moves: msg
-            // })
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(6)
-            expect(msg)
+            expect(msg.moves)
                 .to.deep.have.same.members([
                     {
                         file: 'c',
@@ -327,14 +319,11 @@ describe('Knight Legal moves with friendlies test', () => {
             piece: p,
             board: board
         }, (err, msg) => {
-            // console.log({
-            //     moves: msg
-            // })
             expect(err)
                 .to.be.null
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(6)
-            expect(msg)
+            expect(msg.moves)
                 .to.deep.contain.members([{
                     file: 'c',
                     rank: '6'
@@ -363,12 +352,9 @@ describe('Knight Legal moves with friendlies test', () => {
             piece: p,
             board: board
         }, (err, msg) => {
-            // console.log({
-            //     moves: msg
-            // })
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.deep.have.same.members([{
                     file: 'c',
                     rank: '2'
@@ -393,12 +379,9 @@ describe('Pawn Legal moves with friendlies test', () => {
             piece: p,
             board: board
         }, (err, msg) => {
-            // console.log({
-            //     moves: msg
-            // })
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.deep.have.same.members([{
                     file: 'd',
                     rank: '5'
@@ -421,14 +404,11 @@ describe('Pawn Legal moves with friendlies test', () => {
             piece: p,
             board: board
         }, (err, msg) => {
-            // console.log({
-            //     moves: msg
-            // })
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(1)
-            expect(msg)
+            expect(msg.moves)
                 .to.deep.have.same.members([{
                     file: 'a',
                     rank: '3'
@@ -451,14 +431,11 @@ describe('Pawn Legal moves with friendlies test', () => {
             piece: p,
             board: board
         }, (err, msg) => {
-            // console.log({
-            //     moves: msg
-            // })
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(2)
-            expect(msg)
+            expect(msg.moves)
                 .to.deep.have.same.members([{
                     file: 'f',
                     rank: '3'

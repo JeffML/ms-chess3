@@ -1,25 +1,28 @@
 module.exports = function rankAndFile(position, range = 7) {
-    var moves = [];
+    var moveVectors = [[], [], [], []];
     const cFile = position.file.charCodeAt()
     const cRank = position.rank.charCodeAt();
 
     for (var i = 1; i < range + 1; i++) {
-        moves.push({
+        moveVectors[0].push({
             file: String.fromCharCode(cFile - i),
             rank: String.fromCharCode(cRank)
         });
-        moves.push({
+        moveVectors[1].push({
             file: String.fromCharCode(cFile),
             rank: String.fromCharCode(cRank + i)
         });
-        moves.push({
+        moveVectors[2].push({
             file: String.fromCharCode(cFile + i),
             rank: String.fromCharCode(cRank)
         });
-        moves.push({
+        moveVectors[3].push({
             file: String.fromCharCode(cFile),
             rank: String.fromCharCode(cRank - i)
         });
     }
-    return moves;
+    return {
+        moveVectors,
+        moves: Array.prototype.concat(...moveVectors)
+    };
 }

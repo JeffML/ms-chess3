@@ -23,21 +23,22 @@ describe('Legal moves test', () => {
             cmd: "legalMoves",
             piece: Ba1
         }, (err, msg) => {
+            debugger;
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(7)
-            expect(msg)
+            expect(msg.moves)
                 .to.include({
                     file: 'b',
                     rank: '2'
                 });
-            expect(msg)
+            expect(msg.moves)
                 .to.include({
                     file: 'h',
                     rank: '8'
                 })
-            expect(msg)
+            expect(msg.moves)
                 .not.include({
                     file: 'a',
                     rank: '1'
@@ -60,19 +61,19 @@ describe('Legal moves test', () => {
             // })
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(14)
-            expect(msg)
+            expect(msg.moves)
                 .to.include({
                     file: 'd',
                     rank: '2'
                 });
-            expect(msg)
+            expect(msg.moves)
                 .to.include({
                     file: 'h',
                     rank: '4'
                 })
-            expect(msg)
+            expect(msg.moves)
                 .not.include({
                     file: 'e',
                     rank: '5'

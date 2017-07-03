@@ -9,7 +9,7 @@ module.exports = function movement() {
         cmd: "rawMoves"
     }, (msg, reply) => {
         var err = null;
-        var rawMoves = [];
+        var rawMoves = {};
 
         var pos = msg.piece.position;
 
@@ -21,12 +21,22 @@ module.exports = function movement() {
             rawMoves = diagonal(pos);
             break;
         case 'Q':
-            rawMoves = rankAndFile(pos)
-                .concat(diagonal(pos));
+            var rfMoves = rankAndFile(pos);
+            var dgMoves = diagonal(pos);
+            var vectors = [...rfMoves.moveVectors, ...dgMoves.moveVectors]
+            rawMoves = {
+                moveVectors: vectors,
+                moves: Array.prototype.concat(...vectors)
+            }
             break;
         case 'K':
-            rawMoves = rankAndFile(pos, 1)
-                .concat(diagonal(pos, 1))
+            var rfMoves = rankAndFile(pos, 1);
+            var dgMoves = diagonal(pos, 1);
+            var vectors = [...rfMoves.moveVectors, ...dgMoves.moveVectors]
+            rawMoves = {
+                moveVectors: vectors,
+                moves: Array.prototype.concat(...vectors)
+            }
             break;
         default:
             err = "unhandled " + msg.piece.piece;
@@ -51,28 +61,32 @@ module.exports = function movement() {
             isPawn: isPawn,
             isKnight: isKnight
         }, (err, msg) => {
-            const squared = [];
-
-            msg.forEach((move) => {
-                if (move.file >= 'a' && move.file <= 'h') {
-                    if (move.rank >= 1 && move.rank <= 8) {
-                        squared.push(move)
-                    }
-                }
+            msg.moveVectors.forEach((vector, idx, arr) => {
+                const newVector = vector.filter(move => {
+                    return (move.rank >= 1 && move.rank <= 8) && (move.file >= 'a' && move.file <= 'h');
+                })
+                arr[idx] = newVector;
             })
 
-            reply(null, squared);
+            reply(null, {
+                moveVectors: msg.moveVectors,
+                moves: Array.prototype.concat(...msg.moveVectors)
+            });
         });
     });
 
     this.add('role:movement,cmd:legalMoves', function (msg, reply) {
-        this.prior(msg, function (err, moves) {
+        this.prior(msg, function (err, msg2) {
             if (msg.board) {
-                const boardMoves = legalMovesWithBoard(msg, moves);
-                reply(err, boardMoves);
+                const boardMoves = legalMovesWithBoard(msg, msg2.moves);
+                //FIXME this is wrong:
+                reply(err, {
+                    moves: boardMoves,
+                    moveVectors: msg.moveVectors
+                });
                 return;
             }
-            reply(err, moves);
+            reply(err, msg2);
         });
     });
 };

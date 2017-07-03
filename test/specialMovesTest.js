@@ -12,7 +12,9 @@ const seneca = require('seneca')({
     .use(specialMovement)
     .use(movement);
 
-var expect = require('chai')
+const chaiSubset = require('chai-subset');
+const expect = require('chai')
+    .use(chaiSubset)
     .expect;
 
 describe('Pawn moves test', () => {
@@ -26,17 +28,15 @@ describe('Pawn moves test', () => {
             piece: p,
             isPawn: true
         }, (err, msg) => {
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'a',
                     rank: '3'
-                });
-            expect(msg)
-                .to.include({
+                }, {
                     file: 'a',
                     rank: '4'
-                })
-            expect(msg)
+                }])
+            expect(msg.moves)
                 .not.include({
                     file: 'e',
                     rank: '1'
@@ -55,17 +55,13 @@ describe('Pawn moves test', () => {
             piece: p,
             isPawn: true
         }, (err, msg) => {
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'd',
                     rank: '5'
-                });
-            expect(msg)
-                .to.not.include({
-                    file: 'd',
-                    rank: '6'
-                })
-            expect(msg)
+                }])
+
+            expect(msg.moves)
                 .not.include({
                     file: 'e',
                     rank: '4'
@@ -86,30 +82,24 @@ describe("Knight moves tests", () => {
             piece: p,
             isKnight: true
         }, (err, msg) => {
-            // console.log({
-            //     msg
-            // })
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'b',
                     rank: '3'
-                });
-            expect(msg)
-                .to.include({
-                    file: 'c',
-                    rank: '6'
-                });
-            expect(msg)
-                .to.include({
+                }, {
                     file: 'f',
                     rank: '3'
-                })
-            expect(msg)
+                }, {
+                    file: 'c',
+                    rank: '6'
+                }])
+
+            expect(msg.moves)
                 .not.include({
                     file: 'g',
                     rank: '4'
                 })
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(8)
             done();
         });
@@ -125,27 +115,23 @@ describe("Knight moves tests", () => {
             piece: p,
             isKnight: true
         }, (err, msg) => {
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'a',
                     rank: '5'
-                });
-            expect(msg)
-                .to.include({
+            }, {
                     file: 'c',
                     rank: '5'
-                });
-            expect(msg)
-                .to.include({
+            }, {
                     file: 'd',
                     rank: '6'
-                })
-            expect(msg)
+            }])
+            expect(msg.moves)
                 .not.include({
                     file: 'c',
                     rank: '4'
                 })
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(8)
             done();
         });
@@ -162,24 +148,20 @@ describe('Legal squares test', () => {
             cmd: "legalMoves",
             piece: p
         }, (err, msg) => {
-            // console.log("Na1", {
-            //     msg
-            // })
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(2)
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'b',
                     rank: '3'
-                });
-            expect(msg)
-                .to.include({
+        }, {
                     file: 'c',
                     rank: '2'
-                })
-            expect(msg)
+          }])
+
+            expect(msg.moves)
                 .not.include({
                     file: 'a',
                     rank: '3'
@@ -199,19 +181,17 @@ describe('Legal squares test', () => {
         }, (err, msg) => {
             expect(err)
                 .to.be.null;
-            expect(msg)
+            expect(msg.moves)
                 .to.have.lengthOf(8)
-            expect(msg)
-                .to.include({
+            expect(msg.moves)
+                .to.containSubset([{
                     file: 'e',
                     rank: '2'
-                });
-            expect(msg)
-                .to.include({
+                }, {
                     file: 'c',
                     rank: '6'
-                })
-            expect(msg)
+                }])
+            expect(msg.moves)
                 .not.include({
                     file: 'd',
                     rank: '4'

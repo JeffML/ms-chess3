@@ -4,11 +4,16 @@ const ChessPiece = require('./ChessPiece')
     .ChessPiece;
 
 class Board {
-    constructor(pieces) {
+    constructor(pieces, {
+        onMove = 'W',
+        lastMove = null
+    } = {}) {
         this.boardPieces = {
             white: [],
             black: []
         };
+        this.onMove = onMove;
+        this.lastMove = lastMove;
 
         if (pieces.white) {
             this.boardPieces.white = pieces.white.map(p => {
