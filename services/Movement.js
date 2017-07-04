@@ -1,6 +1,6 @@
 const rankAndFile = require("./helpers/rankAndFileMoves")
 const diagonal = require("./helpers/diagonalMoves")
-const legalMovesWithBoard = require("./helpers/legalMovesWithBoard")
+const legalMovesWithBoard = require("./helpers/legalMovesWithBoard2")
 
 module.exports = function movement() {
 
@@ -76,17 +76,13 @@ module.exports = function movement() {
     });
 
     this.add('role:movement,cmd:legalMoves', function (msg, reply) {
-        this.prior(msg, function (err, msg2) {
+        this.prior(msg, function (err, result) {
             if (msg.board) {
-                const boardMoves = legalMovesWithBoard(msg, msg2.moves);
-                //FIXME this is wrong:
-                reply(err, {
-                    moves: boardMoves,
-                    moveVectors: msg.moveVectors
-                });
-                return;
+                const result2 = legalMovesWithBoard(msg, result);
+                reply(err, result2);
+            } else {
+                reply(err, result);
             }
-            reply(err, msg2);
         });
     });
 };
