@@ -32,10 +32,19 @@ function simpleChecks(msg, msg2) {
 function vectorChecks(msg, msg2) {
     for (const [j, v] of msg2.moveVectors.entries()) {
         for (const [i, m] of v.entries()) {
-            if (msg.board.pieceAt(m)) {
-                msg2.moveVectors[j] = v.slice(0, i);
+            const p = msg.board.pieceAt(m);
+            if (p) {
                 debugger;
-                break;
+                if (p.color === msg.piece.color) {
+                    msg2.moveVectors[j] = v.slice(0, i);
+                    break;
+                } else {
+                    msg2.moveVectors[j] = v.slice(0, i + 1);
+                    Object.assign(msg2.moveVectors[j].slice(-1)[0], {
+                        hasCaptured: p
+                    })
+                    break;
+                }
             }
         }
     }

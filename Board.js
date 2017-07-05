@@ -17,14 +17,18 @@ class Board {
 
         if (pieces.white) {
             this.boardPieces.white = pieces.white.map(p => {
-                const cp = new ChessPiece(p, 'W');
+                const cp = new ChessPiece(p, {
+                    color: 'W'
+                });
                 return cp;
             });
         }
 
         if (pieces.black) {
             this.boardPieces.black = pieces.black.map(p => {
-                const cp = new ChessPiece(p, 'B');
+                const cp = new ChessPiece(p, {
+                    color: 'B'
+                });
                 return cp;
             });
         }
@@ -48,7 +52,9 @@ class Board {
             return p.position.file === file && p.position.rank === rank;
         });
 
-        return wp.length ? wp[0] : bp.length ? bp[0] : null;
+        return wp.length ? wp[0] :
+            bp.length ? bp[0] :
+            null;
     }
 }
 
