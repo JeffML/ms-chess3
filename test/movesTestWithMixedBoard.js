@@ -61,10 +61,11 @@ describe('Bishop Legal moves with friends and foes test', () => {
         });
     });
 
-    xit('Bd4 legal moves with friendlies', (done) => {
+    it('Bd4 legal moves with friendlies', (done) => {
         seneca.error(done);
         var board = new Board({
-            white: ['Bd4', 'Nd3', 'Rc3', 'Pf6']
+            white: ['Bd4', 'Nd3', 'Pf6'],
+            black: ['Rc3']
         })
 
         var p = board.pieceAt('d4');
@@ -78,14 +79,17 @@ describe('Bishop Legal moves with friends and foes test', () => {
             expect(err)
                 .to.be.null;
             expect(msg.moves)
-                .to.have.lengthOf(7)
+                .to.have.lengthOf(8)
             expect(msg.moves)
                 .to.containSubset([{
                     file: 'e',
                     rank: '5'
                 }, {
-                    file: 'g',
-                    rank: '1'
+                    file: 'c',
+                    rank: '3',
+                    hasCaptured: {
+                        piece: 'R'
+                    }
                 }])
             expect(msg.moves)
                 .not.include({
@@ -97,12 +101,13 @@ describe('Bishop Legal moves with friends and foes test', () => {
     });
 });
 
-describe.skip('Rook Legal moves with friendlies test', () => {
+describe('Rook Legal moves with friends and foes test', () => {
     it('Ra1 legal moves', (done) => {
         seneca.error(done);
 
         var board = new Board({
-            white: ['Ra1', 'Pc3', 'Nf6', 'Qg1']
+            white: ['Ra1', 'Pc3', 'Nf6'],
+            black: ['Qg1']
         })
         var p = board.pieceAt('a1');
 
@@ -115,7 +120,7 @@ describe.skip('Rook Legal moves with friendlies test', () => {
             expect(err)
                 .to.be.null;
             expect(msg.moves)
-                .to.have.lengthOf(12)
+                .to.have.lengthOf(13)
             expect(msg.moves)
                 .to.containSubset([{
                     file: 'a',
@@ -124,8 +129,11 @@ describe.skip('Rook Legal moves with friendlies test', () => {
                     file: 'a',
                     rank: '8'
                 }, {
-                    file: 'f',
-                    rank: '1'
+                    file: 'g',
+                    rank: '1',
+                    hasCaptured: {
+                        piece: 'Q'
+                    }
                 }, {
                     file: 'b',
                     rank: '1'
@@ -144,10 +152,11 @@ describe.skip('Rook Legal moves with friendlies test', () => {
         });
     });
 
-    it('Rd4 legal with friendlies moves', (done) => {
+    it('Rd4 legal moves with friends and foes', (done) => {
         seneca.error(done);
         var board = new Board({
-            white: ['Rd4', 'Nd3', 'Rc3', 'Pf6']
+            white: ['Rd4', 'Nd3', 'Rc3'],
+            black: ['Pg4', 'Nc4']
         })
 
         var p = board.pieceAt('d4');
@@ -161,31 +170,46 @@ describe.skip('Rook Legal moves with friendlies test', () => {
             expect(err)
                 .to.be.null;
             expect(msg.moves)
-                .to.have.lengthOf(11)
+                .to.have.lengthOf(8)
             expect(msg.moves)
                 .to.containSubset([{
-                    file: 'd',
-                    rank: '5'
+                        file: 'd',
+                        rank: '5'
                 }, {
-                    file: 'g',
-                    rank: '4'
-                }])
+                        file: 'g',
+                        rank: '4',
+                        hasCaptured: {
+                            piece: 'P'
+                        }
+                }, {
+                        file: 'c',
+                        rank: '4',
+                        hasCaptured: {
+                            piece: 'N'
+                        }
+                },
+            ])
             expect(msg.moves)
                 .not.include({
                     file: 'd',
                     rank: '2'
+                })
+                .not.include({
+                    file: 'h',
+                    rank: '4'
                 });
             done();
         });
     });
 });
 
-describe.skip('Queen Legal moves with friendlies test', () => {
+describe('Queen Legal moves with friends and foes test', () => {
     it('Qg2 legal moves', (done) => {
         seneca.error(done);
 
         var board = new Board({
-            white: ['Qg2', 'Pg5', 'Rc3', 'Bd5']
+            white: ['Qg2', 'Pg5', 'Rc3', 'Bd5'],
+            black: ['Nb2', 'Qh3']
         })
         var p = board.pieceAt('g2');
 
@@ -198,22 +222,35 @@ describe.skip('Queen Legal moves with friendlies test', () => {
             expect(err)
                 .to.be.null;
             expect(msg.moves)
-                .to.have.lengthOf(15)
+                .to.have.lengthOf(14)
             expect(msg.moves)
                 .to.containSubset([{
-                    file: 'a',
-                    rank: '2'
-                }, {
                     file: 'h',
                     rank: '1'
                 }, {
                     file: 'e',
                     rank: '4'
-                }])
+                }, {
+                    file: 'h',
+                    rank: '3',
+                    hasCaptured: {
+                        piece: 'Q'
+                    }
+                }, {
+                    file: 'b',
+                    rank: '2',
+                    hasCaptured: {
+                        piece: 'N'
+                    }
+                }, ])
             expect(msg.moves)
                 .not.include({
                     file: 'g',
                     rank: '6'
+                })
+                .not.include({
+                    file: 'a',
+                    rank: '2'
                 });
             expect(msg.moves)
                 .not.include({
@@ -224,10 +261,11 @@ describe.skip('Queen Legal moves with friendlies test', () => {
         });
     });
 
-    it('Qd4 legal moves with friendlies', (done) => {
+    it('Qd4 legal moves with friends and foes', (done) => {
         seneca.error(done);
         var board = new Board({
-            white: ['Qd4', 'Pg5', 'Rc3', 'Bd5']
+            white: ['Qd4', 'Pg5', 'Rc3', 'Bd5'],
+            black: ['Pa4', 'Nf4', 'Bh1']
         })
 
         var p = board.pieceAt('d4');
@@ -241,7 +279,7 @@ describe.skip('Queen Legal moves with friendlies test', () => {
             expect(err)
                 .to.be.null;
             expect(msg.moves)
-                .to.have.lengthOf(20)
+                .to.have.lengthOf(18)
             expect(msg.moves)
                 .to.containSubset([{
                     file: 'd',
@@ -249,18 +287,40 @@ describe.skip('Queen Legal moves with friendlies test', () => {
                 }, {
                     file: 'g',
                     rank: '7'
-                }])
+                }, {
+                    file: 'a',
+                    rank: '4',
+                    hasCaptured: {
+                        piece: 'P'
+                    }
+                }, {
+                    file: 'f',
+                    rank: '4',
+                    hasCaptured: {
+                        piece: 'N'
+                    }
+                }, ])
             expect(msg.moves)
                 .to.not.include({
                     file: 'c',
                     rank: '3'
                 })
-            expect(msg.moves)
                 .to.not.include({
                     file: 'd',
                     rank: '8'
                 })
-            done();
+                .to.not.include({
+                    file: 'g',
+                    rank: '4'
+                })
+                .to.not.include({
+                    file: 'h',
+                    rank: '1',
+                    hasCaptured: {
+                        piece: 'B'
+                    }
+                }),
+                done();
         });
     });
 });
