@@ -1,6 +1,6 @@
 const rankAndFile = require("./helpers/rankAndFileMoves")
 const diagonal = require("./helpers/diagonalMoves")
-const legalMovesWithBoard = require("./helpers/legalMovesWithBoard2")
+const legalMovesWithBoard = require("./helpers/legalMovesWithBoard")
 
 module.exports = function movement() {
 
