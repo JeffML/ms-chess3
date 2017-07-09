@@ -419,12 +419,13 @@ describe('Knight Legal moves with friends and foes test', () => {
     });
 })
 
-describe.skip('Pawn Legal moves with friendlies test', () => {
+describe('Pawn moves with foes test', () => {
     it('Pd4 legal moves', (done) => {
         seneca.error(done);
 
         var board = new Board({
-            white: ['Pd4', 'Nd6', 'Pe4', 'Pc5']
+            white: ['Pd4', 'Nd6', 'Pe4'],
+            black: ['Be5']
         })
         var p = board.pieceAt('d4');
 
@@ -437,19 +438,26 @@ describe.skip('Pawn Legal moves with friendlies test', () => {
             expect(err)
                 .to.be.null;
             expect(msg.moves)
-                .to.deep.have.same.members([{
+                .to.containSubset([{
                     file: 'd',
                     rank: '5'
+                }, {
+                    file: 'e',
+                    rank: '5',
+                    hasCaptured: {
+                        piece: 'B'
+                    }
                 }]);
             done();
         });
     });
 
-    it('Pa2 legal moves', (done) => {
+    it('Pa2 legal moves with capture', (done) => {
         seneca.error(done);
 
         var board = new Board({
-            white: ['Pa2', 'Pb3', 'Qa4']
+            white: ['Pa2', 'Qa4'],
+            black: ['Pb3']
         })
         var p = board.pieceAt('a2');
 
@@ -462,23 +470,33 @@ describe.skip('Pawn Legal moves with friendlies test', () => {
             expect(err)
                 .to.be.null;
             expect(msg.moves)
-                .to.have.lengthOf(1)
+                .to.have.lengthOf(2)
             expect(msg.moves)
-                .to.deep.have.same.members([{
+                .to.containSubset([{
                     file: 'a',
                     rank: '3'
+                }, {
+                    file: 'b',
+                    rank: '3',
+                    hasCaptured: {
+                        piece: 'P'
+                    }
                 }]);
             done();
         });
     });
 
-    it('Pf2 legal moves', (done) => {
+    it('Pf5 en passant test', (done) => {
         seneca.error(done);
 
         var board = new Board({
-            white: ['Pf2', 'Pb3', 'Qa4', 'Nf5']
-        })
-        var p = board.pieceAt('f2');
+            white: ['Pf5', 'Ne6'],
+            black: ['Pg5']
+        });
+
+        board.epPossibleOnPawn = board.pieceAt('g5');
+
+        var p = board.pieceAt('f5');
 
         seneca.act({
             role: "movement",
@@ -491,12 +509,18 @@ describe.skip('Pawn Legal moves with friendlies test', () => {
             expect(msg.moves)
                 .to.have.lengthOf(2)
             expect(msg.moves)
-                .to.deep.have.same.members([{
+                .to.containSubset([{
                     file: 'f',
-                    rank: '3'
+                    rank: '6'
                 }, {
-                    file: 'f',
-                    rank: '4'
+                    file: 'g',
+                    rank: '6',
+                    hasCaptured: {
+                        piece: 'P',
+                        position: {
+                            rank: '5'
+                        }
+                    }
                 }]);
             done();
         });

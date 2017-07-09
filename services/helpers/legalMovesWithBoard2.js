@@ -6,15 +6,15 @@ module.exports = function (msg, msg2) {
         R: vectorChecks,
         K: vectorChecks,
         Q: vectorChecks,
-        P: simpleChecks,
-        N: simpleChecks
+        P: pawnChecks,
+        N: knightChecks
     };
 
     var rangeCheck = rangeChecks[msg.piece.piece];
     return rangeCheck(msg, msg2)
 }
 
-function simpleChecks(msg, msg2) {
+function knightChecks(msg, msg2) {
     const newMoves = [];
 
     for (const m of msg2.moves) {
@@ -32,6 +32,80 @@ function simpleChecks(msg, msg2) {
     };
 }
 
+function pawnChecks(msg, msg2) {
+    function upperLeft(p) {
+        const dir = p.color === 'W' ? 1 : -1;
+        const cFile = p.position.file.charCodeAt() + dir;
+        const cRank = p.position.rank.charCodeAt() + dir;
+        const pos = {
+            file: String.fromCharCode(cFile),
+            rank: String.fromCharCode(cRank)
+        }
+
+        pos.hasCaptured = msg.board.pieceAt(pos);
+
+        return pos.hasCaptured && pos.hasCaptured.color !== p.color ? pos : null;
+    }
+
+    function upperRight(p) {
+        const dir = p.color === 'W' ? 1 : -1;
+        const cFile = p.position.file.charCodeAt() - dir;
+        const cRank = p.position.rank.charCodeAt() - dir;
+        const pos = {
+            file: String.fromCharCode(cFile),
+            rank: String.fromCharCode(cRank)
+        }
+
+        pos.hasCaptured = msg.board.pieceAt(pos);
+
+        return pos.hasCaptured && pos.hasCaptured.color !== p.color ? pos : null;
+    }
+
+    const capturable = [upperLeft(msg.piece), upperRight(msg.piece)];
+
+    const newMoves = [];
+    for (const m of msg2.moves) {
+        const p = msg.board.pieceAt(m)
+        if (!p) {
+            newMoves.push(m)
+        }
+    }
+
+    if (capturable[0] && msg.board.pieceAt(capturable[0])) {
+        newMoves.push(capturable[0])
+    }
+
+    if (capturable[1] && msg.board.pieceAt(capturable[1])) {
+        newMoves.push(capturable[1])
+    }
+
+
+    //en passant check
+    var ep = msg.board.epPossibleOnPawn;
+
+    if (ep) {
+        const epf = ep.position.file.charCodeAt();
+        const epr = ep.position.rank.charCodeAt();
+
+        const mf = msg.piece.position.file.charCodeAt();
+        const mr = msg.piece.position.rank.charCodeAt();
+
+        if (epr === mr && (epf === mf + 1 || epf === mf - 1)) {
+            const epCapture = {
+                file: String.fromCharCode(epf),
+                rank: String.fromCharCode(epr + (msg.piece.color === 'W' ? 1 : -1)),
+                hasCaptured: ep
+            }
+
+            newMoves.push(epCapture)
+        }
+    }
+
+    return {
+        moves: newMoves,
+        moveVectors: [newMoves]
+    }
+}
 
 function vectorChecks(msg, msg2) {
     for (const [j, v] of msg2.moveVectors.entries()) {
