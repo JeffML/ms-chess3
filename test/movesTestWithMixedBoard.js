@@ -371,12 +371,13 @@ describe.skip('King Legal moves with friendlies test', () => {
     });
 });
 
-describe.skip('Knight Legal moves with friendlies test', () => {
+describe('Knight Legal moves with friends and foes test', () => {
     it('Nd4 legal moves', (done) => {
         seneca.error(done);
 
         var board = new Board({
-            white: ['Nd4', 'Pc5', 'Pe6', 'Pf3']
+            white: ['Nd4', 'Pc5', 'Pe6', 'Pf3'],
+            black: ['Nf5', 'Bb3']
         })
         var p = board.pieceAt('d4');
 
@@ -391,7 +392,7 @@ describe.skip('Knight Legal moves with friendlies test', () => {
             expect(msg.moves)
                 .to.have.lengthOf(6)
             expect(msg.moves)
-                .to.deep.contain.members([{
+                .to.containSubset([{
                     file: 'c',
                     rank: '6'
                 }, {
@@ -400,6 +401,18 @@ describe.skip('Knight Legal moves with friendlies test', () => {
                 }, {
                     file: 'b',
                     rank: '5'
+                }, {
+                    file: 'f',
+                    rank: '5',
+                    hasCaptured: {
+                        piece: 'N'
+                    }
+                }, {
+                    file: 'b',
+                    rank: '3',
+                    hasCaptured: {
+                        piece: 'B'
+                    }
                 }]);
             done();
         });

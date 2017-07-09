@@ -18,7 +18,11 @@ function simpleChecks(msg, msg2) {
     const newMoves = [];
 
     for (const m of msg2.moves) {
-        if (!msg.board.pieceAt(m)) {
+        const p = msg.board.pieceAt(m)
+        if (!p) {
+            newMoves.push(m)
+        } else if (p.color !== msg.piece.color) {
+            m.hasCaptured = p;
             newMoves.push(m)
         }
     }
