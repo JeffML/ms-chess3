@@ -33,10 +33,10 @@ function knightChecks(msg, msg2) {
 }
 
 function pawnChecks(msg, msg2) {
-    function upperLeft(p) {
+    function diag(lr, p) {
         const dir = p.color === 'W' ? 1 : -1;
-        const cFile = p.position.file.charCodeAt() + dir;
-        const cRank = p.position.rank.charCodeAt() + dir;
+        const cFile = p.position.file.charCodeAt() + lr * dir;
+        const cRank = p.position.rank.charCodeAt() + lr * dir;
         const pos = {
             file: String.fromCharCode(cFile),
             rank: String.fromCharCode(cRank)
@@ -47,21 +47,9 @@ function pawnChecks(msg, msg2) {
         return pos.hasCaptured && pos.hasCaptured.color !== p.color ? pos : null;
     }
 
-    function upperRight(p) {
-        const dir = p.color === 'W' ? 1 : -1;
-        const cFile = p.position.file.charCodeAt() - dir;
-        const cRank = p.position.rank.charCodeAt() - dir;
-        const pos = {
-            file: String.fromCharCode(cFile),
-            rank: String.fromCharCode(cRank)
-        }
-
-        pos.hasCaptured = msg.board.pieceAt(pos);
-
-        return pos.hasCaptured && pos.hasCaptured.color !== p.color ? pos : null;
-    }
-
-    const capturable = [upperLeft(msg.piece), upperRight(msg.piece)];
+    const LEFT = -1,
+        RIGHT = 1;
+    const capturable = [diag(LEFT, msg.piece), diag(RIGHT, msg.piece)];
 
     const newMoves = [];
     for (const m of msg2.moves) {
