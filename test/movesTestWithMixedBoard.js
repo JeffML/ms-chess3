@@ -417,31 +417,6 @@ describe('Knight Legal moves with friends and foes test', () => {
             done();
         });
     });
-
-    it('Na1 legal moves', (done) => {
-        seneca.error(done);
-
-        var board = new Board({
-            white: ['Na1', 'Pb3', 'Pe6', 'Pf3']
-        })
-        var p = board.pieceAt('a1');
-
-        seneca.act({
-            role: "movement",
-            cmd: "legalMoves",
-            piece: p,
-            board: board
-        }, (err, msg) => {
-            expect(err)
-                .to.be.null;
-            expect(msg.moves)
-                .to.deep.have.same.members([{
-                    file: 'c',
-                    rank: '2'
-                }])
-            done();
-        });
-    });
 })
 
 describe.skip('Pawn Legal moves with friendlies test', () => {
