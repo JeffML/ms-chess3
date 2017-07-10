@@ -100,7 +100,6 @@ function vectorChecks(boardAndPiece, candidateMoves) {
         for (const [i, m] of v.entries()) {
             const p = boardAndPiece.board.pieceAt(m);
             if (p) {
-                debugger;
                 if (p.color === boardAndPiece.piece.color) {
                     candidateMoves.moveVectors[j] = v.slice(0, i);
                     break;
