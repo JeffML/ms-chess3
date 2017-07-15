@@ -56,6 +56,10 @@ class Board {
             bp.length ? bp[0] :
             null;
     }
+
+
+    removePiece(piece) {}
 }
+
 
 module.exports = Board;

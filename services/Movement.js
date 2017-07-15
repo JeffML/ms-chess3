@@ -1,7 +1,7 @@
 const rankAndFile = require("./helpers/rankAndFileMoves")
 const diagonal = require("./helpers/diagonalMoves")
 const legalMovesWithBoard = require("./helpers/legalMovesWithBoard")
-
+const legalMovesWithKing = require("./helpers/legalMovesWithKing")
 module.exports = function movement() {
 
     this.add({
@@ -79,7 +79,11 @@ module.exports = function movement() {
         this.prior(msg, function (err, result) {
             if (msg.board) {
                 const result2 = legalMovesWithBoard(msg, result);
-                reply(err, result2);
+                if (msg.piece.piece === 'K') {
+                    legalMovesWithKing.call(this, msg, result2, reply)
+                } else {
+                    reply(err, result2);
+                }
             } else {
                 reply(err, result);
             }
