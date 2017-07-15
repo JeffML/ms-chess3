@@ -319,8 +319,8 @@ describe('Queen Legal moves with friends and foes test', () => {
                     hasCaptured: {
                         piece: 'B'
                     }
-                }),
-                done();
+                });
+            done();
         });
     });
 });

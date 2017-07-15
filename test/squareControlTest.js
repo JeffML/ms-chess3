@@ -76,11 +76,14 @@ describe('controlled by, Board 1', () => {
             board: board,
             color: 'black'
         }, (err, msg) => {
-            console.log(msg.controlled)
+            // console.log({
+            //     color: 'black',
+            //     controlled: msg.controlled
+            // })
             expect(err)
                 .to.be.null;
             expect(msg.controlled)
-                .to.deep.equal([{
+                .to.have.all.deep.members([{
                         file: 'f',
                         rank: '4'
                     },

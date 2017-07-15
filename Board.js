@@ -3,7 +3,13 @@
 const ChessPiece = require('./ChessPiece')
     .ChessPiece;
 
+const colorMap = {
+    W: 'white',
+    B: 'black'
+};
+
 class Board {
+
     constructor(pieces, {
         onMove = 'W',
         lastMove = null
@@ -57,8 +63,20 @@ class Board {
             null;
     }
 
+    allPieces() {
+        return [...this.boardPieces.white, ...this.boardPieces.black]
+    }
 
-    removePiece(piece) {}
+    removePiece(piece) {
+        const color = colorMap[piece.color]
+
+        return this.boardPieces[color] = this.boardPieces[color].filter(p => p !== piece)
+    }
+
+    addPiece(piece) {
+        const color = colorMap[piece.color]
+        this.boardPieces[color].push(piece);
+    }
 }
 
 
