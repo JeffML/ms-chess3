@@ -49,7 +49,7 @@ describe('King moves with foes test', () => {
                         rank: '1'
                     }
                 ])
-            expect(king.inCheck)
+            expect(msg.inCheck)
                 .to.be.true
             done();
         });
@@ -77,7 +77,7 @@ describe('King moves with foes test', () => {
                 .to.be.null;
             expect(msg.moves)
                 .to.have.lengthOf(0)
-            expect(king.checkMated)
+            expect(msg.checkMated)
                 .to.be.true
             done();
         });
@@ -105,9 +105,9 @@ describe('King moves with foes test', () => {
                 .to.be.null;
             expect(msg.moves)
                 .to.have.lengthOf(4)
-            expect(king.canKSideCastle)
+            expect(msg.canKSideCastle)
                 .to.be.false
-            expect(king.canQSideCastle)
+            expect(msg.canQSideCastle)
                 .to.be.false
             done();
         });

@@ -9,7 +9,7 @@ module.exports = function (boardAndPiece, candidateMoves, reply) {
 
         const opposingControlled = [...opposing.controlled]
         const board = boardAndPiece.board;
-        const canCastle = !king.inCheck &&
+        const canCastle = !candidateMoves.inCheck &&
             !king.hasMoved &&
             rook &&
             rook.color === king.color &&
@@ -51,24 +51,27 @@ module.exports = function (boardAndPiece, candidateMoves, reply) {
         const kingSq = king.position;
         const inCheck = !!opposing.controlled.find(o => o.rank === kingSq.rank && o.file === kingSq.file)
 
-        king.inCheck = inCheck;
+        const additional = {}
+        additional.inCheck = inCheck;
 
-        king.checkMated = (inCheck && filteredMoves.length === 0)
+        additional.checkMated = (inCheck && filteredMoves.length === 0)
 
-        const rank = king.color === 'W' ? 1 : 8;
+        const rank = additional.color === 'W' ? 1 : 8;
         let rook = boardAndPiece.board.pieceAt(`a${rank}`);
         let intervening = [`b${rank}`, `c${rank}`, `d${rank}`]
 
-        king.canQSideCastle = canCastle(king, rook, intervening, opposing)
+        additional.canQSideCastle = canCastle(king, rook, intervening, opposing)
 
         rook = boardAndPiece.board.pieceAt(`h${rank}`);
         intervening = [`f${rank}`, `g${rank}`]
 
-        king.canKSideCastle = canCastle(king, rook, intervening, opposing)
+        additional.canKSideCastle = canCastle(king, rook, intervening, opposing)
 
         candidateMoves.moves = filteredMoves;
         delete candidateMoves.moveVectors; // no longer valid, and no longer needed
 
+        Object.assign(candidateMoves, additional);
+        console.log(candidateMoves)
         reply(null, candidateMoves)
     });
 };
