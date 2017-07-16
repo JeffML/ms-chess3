@@ -5,7 +5,7 @@ module.exports = function (boardAndPiece, candidateMoves, reply) {
     boardAndPiece.board.removePiece(boardAndPiece.piece);
 
     function canCastle(king, rook, intervening, opposing) {
-        console.log("canCastle", arguments)
+        // console.log("canCastle", arguments)
 
         const opposingControlled = [...opposing.controlled]
         const board = boardAndPiece.board;
