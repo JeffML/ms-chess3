@@ -5,8 +5,23 @@ module.exports = function (boardAndPiece, candidateMoves, reply) {
     boardAndPiece.board.removePiece(boardAndPiece.piece);
 
     function canCastle(king, rook, intervening, opposing) {
-        const canCastle = !king.hasMoved && rook && !rook.hasMoved;
-        return canCastle;
+        const board = boardAndPiece.board;
+        const canCastle = !king.inCheck &&
+            !king.hasMoved &&
+            rook &&
+            rook.color === king.color &&
+            !rook.hasMoved;
+        if (!canCastle) return false;
+
+        const pieceInTheWay = !!intervening.find(sq => board.pieceAt(sq));
+        if (pieceInTheWay) return false;
+
+        const passThruCheck = !!intervening.find(sq =>
+            opposing.find(opp => (opp.rank === sq.rank && opp.file == sq.file))
+        )
+        if (passThruCheck) return false;
+
+        return true;
     }
 
     this.use(require('../SquareControl'))
