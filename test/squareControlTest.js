@@ -37,7 +37,7 @@ describe('controlled by, Board 1', () => {
             expect(err)
                 .to.be.null;
             expect(msg.controlled)
-                .to.deep.equal( [{ 
+                .to.have.all.deep.members( [{ 
                     file:   'e',
                      rank:   '6' 
                 },       { 

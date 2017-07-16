@@ -11,10 +11,17 @@ module.exports = function (boardAndPiece, candidateMoves, reply) {
         cmd: "squaresControlledBy",
         board: boardAndPiece.board,
         color: opposingColor,
-    }, (err, msg) => {
-        //FIXME: do something here
-        // add the removed K back in 
+    }, (err, opposing) => {
+        if (err) {
+            reply(err);
+            return;
+        }
+        // console.log(opposing.controlled)
+        // add the removed K back in
         boardAndPiece.board.addPiece(boardAndPiece.piece);
-        reply(err, candidateMoves)
+        const filteredMoves = candidateMoves.moves.filter(m => !opposing.controlled.includes(m))
+        candidateMoves.moves = filteredMoves;
+        delete candidateMoves.moveVectors; // no longer valid, and no longer needed
+        reply(null, candidateMoves)
     });
 };
