@@ -16,12 +16,18 @@ module.exports = function (boardAndPiece, candidateMoves, reply) {
             reply(err);
             return;
         }
-        // console.log(opposing.controlled)
+        console.log(opposing.controlled)
         // add the removed K back in
         boardAndPiece.board.addPiece(boardAndPiece.piece);
-        const filteredMoves = candidateMoves.moves.filter(m => !opposing.controlled.includes(m))
+        const filteredMoves = candidateMoves.moves.filter(m =>
+            !!!opposing.controlled.find(o => o.rank === m.rank && o.file === m.file)
+        )
+
         candidateMoves.moves = filteredMoves;
         delete candidateMoves.moveVectors; // no longer valid, and no longer needed
+        console.log(
+            candidateMoves
+        )
         reply(null, candidateMoves)
     });
 };

@@ -325,52 +325,6 @@ describe('Queen Legal moves with friends and foes test', () => {
     });
 });
 
-describe.skip('King Legal moves with friendlies test', () => {
-    it('Kd4 legal moves', (done) => {
-        seneca.error(done);
-
-        var board = new Board({
-            white: ['Kd4', 'Pg5', 'Rc3', 'Bd5']
-        })
-        var p = board.pieceAt('d4');
-
-        seneca.act({
-            role: "movement",
-            cmd: "legalMoves",
-            piece: p,
-            board: board
-        }, (err, msg) => {
-            expect(err)
-                .to.be.null;
-            expect(msg.moves)
-                .to.have.lengthOf(6)
-            expect(msg.moves)
-                .to.deep.have.same.members([
-                    {
-                        file: 'c',
-                        rank: '4'
-                }, {
-                        file: 'e',
-                        rank: '5'
-                }, {
-                        file: 'c',
-                        rank: '5'
-                }, {
-                        file: 'e',
-                        rank: '4'
-                }, {
-                        file: 'e',
-                        rank: '3'
-                }, {
-                        file: 'd',
-                        rank: '3'
-                }
-            ])
-            done();
-        });
-    });
-});
-
 describe('Knight Legal moves with friends and foes test', () => {
     it('Nd4 legal moves', (done) => {
         seneca.error(done);

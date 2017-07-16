@@ -38,29 +38,24 @@ describe('controlled by, Board 1', () => {
                 .to.be.null;
             expect(msg.controlled)
                 .to.have.all.deep.members( [{ 
-                    file:   'e',
-                     rank:   '6' 
+                        file:   'e',
+                         rank:   '6' 
                 },       { 
-                    file:   'g',
-                     rank:   '6' 
+                        file:   'g',
+                         rank:   '6' 
+                },         
+                    { 
+                        file:   'g',
+                         rank:   '7' 
                 },       { 
-                    file:   'f',
-                     rank:   '5' 
+                        file:   'e',
+                         rank:   '7' 
                 },       { 
-                    file:   'e',
-                     rank:   '5' 
+                        file:   'g',
+                         rank:   '5' 
                 },       { 
-                    file:   'g',
-                     rank:   '7' 
-                },       { 
-                    file:   'e',
-                     rank:   '7' 
-                },       { 
-                    file:   'g',
-                     rank:   '5' 
-                },       { 
-                    file:   'f',
-                     rank:   '8' 
+                        file:   'f',
+                         rank:   '8' 
                 }] );
 
             done();
