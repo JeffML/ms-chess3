@@ -51,16 +51,13 @@ class Board {
             rank = position[1];
         }
 
-        const wp = this.boardPieces.white.filter(p => {
-            return p.position.file === file && p.position.rank === rank;
-        });
-        const bp = this.boardPieces.black.filter(p => {
-            return p.position.file === file && p.position.rank === rank;
-        });
 
-        return wp.length ? wp[0] :
-            bp.length ? bp[0] :
-            null;
+        const p = this.allPieces()
+            .find(p => {
+                return p.position.file === file && p.position.rank === rank;
+            });
+
+        return p;
     }
 
     allPieces() {

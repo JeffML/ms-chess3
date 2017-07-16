@@ -5,6 +5,9 @@ module.exports = function (boardAndPiece, candidateMoves, reply) {
     boardAndPiece.board.removePiece(boardAndPiece.piece);
 
     function canCastle(king, rook, intervening, opposing) {
+        console.log("canCastle", arguments)
+
+        const opposingControlled = [...opposing.controlled]
         const board = boardAndPiece.board;
         const canCastle = !king.inCheck &&
             !king.hasMoved &&
@@ -17,7 +20,7 @@ module.exports = function (boardAndPiece, candidateMoves, reply) {
         if (pieceInTheWay) return false;
 
         const passThruCheck = !!intervening.find(sq =>
-            opposing.find(opp => (opp.rank === sq.rank && opp.file == sq.file))
+            opposingControlled.find(opp => (opp.rank === sq.rank && opp.file == sq.file))
         )
         if (passThruCheck) return false;
 
@@ -50,9 +53,9 @@ module.exports = function (boardAndPiece, candidateMoves, reply) {
 
         king.inCheck = inCheck;
 
-        king.canQSideCastle = king.canKSideCastle = !(king.inCheck || king.hasMoved);
+        king.checkMated = (inCheck && filteredMoves.length === 0)
 
-        const rank = king.color === 'W' ? '1' : '8';
+        const rank = king.color === 'W' ? 1 : 8;
         let rook = boardAndPiece.board.pieceAt(`a${rank}`);
         let intervening = [`b${rank}`, `c${rank}`, `d${rank}`]
 
@@ -63,13 +66,9 @@ module.exports = function (boardAndPiece, candidateMoves, reply) {
 
         king.canKSideCastle = canCastle(king, rook, intervening, opposing)
 
-        king.checkMated = (inCheck && filteredMoves.length === 0)
-
         candidateMoves.moves = filteredMoves;
         delete candidateMoves.moveVectors; // no longer valid, and no longer needed
-        // console.log(
-        //     candidateMoves
-        // )
+
         reply(null, candidateMoves)
     });
 };

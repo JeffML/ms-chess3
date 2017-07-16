@@ -82,4 +82,34 @@ describe('King moves with foes test', () => {
             done();
         });
     });
+
+    it('canCastle: intervening test', (done) => {
+        seneca.error(done);
+
+        var board = new Board({
+            white: ['Ke1', 'Ng1', 'Pg2', 'Ph2', 'Rh1'],
+            black: ['Ke8', 'Nf2']
+        })
+        var king = board.pieceAt('e1');
+
+        seneca.act({
+            role: "movement",
+            cmd: "legalMoves",
+            piece: king,
+            board: board
+        }, (err, msg) => {
+            // console.log({
+            //     moves: msg.moves
+            // })
+            expect(err)
+                .to.be.null;
+            expect(msg.moves)
+                .to.have.lengthOf(4)
+            expect(king.canKSideCastle)
+                .to.be.false
+            expect(king.canQSideCastle)
+                .to.be.false
+            done();
+        });
+    });
 });
