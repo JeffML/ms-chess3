@@ -24,17 +24,17 @@ describe('King moves with foes test', () => {
             white: ['Ke1', 'Pe3', 'Nd4', 'Bd2', 'Bf1'],
             black: ['Kg5', 'Qh4']
         })
-        var p = board.pieceAt('e1');
+        var king = board.pieceAt('e1');
 
         seneca.act({
             role: "movement",
             cmd: "legalMoves",
-            piece: p,
+            piece: king,
             board: board
         }, (err, msg) => {
-            console.log({
-                moves: msg.moves
-            })
+            // console.log({
+            //     moves: msg.moves
+            // })
             expect(err)
                 .to.be.null;
             expect(msg.moves)
@@ -49,7 +49,36 @@ describe('King moves with foes test', () => {
                         rank: '1'
                     }
                 ])
-            //expect(msg.mustMove).to.be.true
+            expect(king.inCheck)
+                .to.be.true
+            done();
+        });
+    });
+
+    it('K in checkmate test', (done) => {
+        seneca.error(done);
+
+        var board = new Board({
+            white: ['Kh1', 'Ph2', 'Ng1', 'Pg2'],
+            black: ['Ke1', 'Nf2']
+        })
+        var king = board.pieceAt('h1');
+
+        seneca.act({
+            role: "movement",
+            cmd: "legalMoves",
+            piece: king,
+            board: board
+        }, (err, msg) => {
+            // console.log({
+            //     moves: msg.moves
+            // })
+            expect(err)
+                .to.be.null;
+            expect(msg.moves)
+                .to.have.lengthOf(0)
+            expect(king.checkMated)
+                .to.be.true
             done();
         });
     });
